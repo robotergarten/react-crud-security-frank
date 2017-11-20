@@ -54,6 +54,7 @@ public class Employee implements Serializable {
 
 	private @ManyToOne Manager manager;
 
+	protected Employee() {}
 
 	public Employee(String firstName, String lastName, String description, Manager manager) {
 		this.firstName = firstName;
