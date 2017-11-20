@@ -15,9 +15,7 @@
  */
 package com.greglturnquist.payroll;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import lombok.Data;
 import lombok.ToString;
@@ -27,6 +25,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.io.Serializable;
+
 /**
  * @author Greg Turnquist
  */
@@ -34,16 +34,25 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Data
 @ToString(exclude = "password")
 @Entity
-public class Manager {
+@Table(name="manager")
+public class Manager implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	public static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
-	private @Id @GeneratedValue Long id;
+	@Id
+	@GeneratedValue(strategy= GenerationType.AUTO)
+	@Column(name="id")
+	private Long id;
 
+	@Column(name="name")
 	private String name;
 
+	@Column(name="password")
 	private @JsonIgnore String password;
 
+	@Column(name="roles")
 	private String[] roles;
 
 	public void setPassword(String password) {

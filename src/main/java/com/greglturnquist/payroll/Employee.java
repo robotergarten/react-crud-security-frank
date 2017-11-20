@@ -15,34 +15,45 @@
  */
 package com.greglturnquist.payroll;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Version;
-
-import lombok.Data;
+import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
+
+import java.io.Serializable;
 
 /**
  * @author Greg Turnquist
  */
-// tag::code[]
+
 @Data
 @Entity
-public class Employee {
+@Table(name="employee")
+public class Employee implements Serializable {
+	private static final long serialVersionUID = 1L;
 
-	private @Id @GeneratedValue Long id;
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="id")
+	private Long id;
+
+	@Column(name="first_name")
 	private String firstName;
+	@Column(name="last_name")
 	private String lastName;
+	@Column(name="description")
 	private String description;
-
 	private @Version @JsonIgnore Long version;
 
 	private @ManyToOne Manager manager;
 
-	private Employee() {}
 
 	public Employee(String firstName, String lastName, String description, Manager manager) {
 		this.firstName = firstName;

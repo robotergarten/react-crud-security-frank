@@ -1,29 +1,28 @@
-
-CREATE DATABASE IF NOT EXISTS `concretepage` ;
-USE `concretepage`;
--- Dumping structure for table concretepage.articles
-CREATE TABLE IF NOT EXISTS `articles` (
-  `article_id` int(5) NOT NULL AUTO_INCREMENT,
-  `title` varchar(200) NOT NULL,
-  `category` varchar(100) NOT NULL,
-  PRIMARY KEY (`article_id`)
+CREATE DATABASE IF NOT EXISTS `crud` ;
+USE `crud`;
+CREATE TABLE IF NOT EXISTS `manager` (
+  `manager_id` int(5) NOT NULL AUTO_INCREMENT,
+  `name` varchar(200) NOT NULL,
+  `password` varchar(200) NOT NULL,
+  `roles` varchar(200) NOT NULL,
+  PRIMARY KEY (`manager_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 -- Dumping data for table concretepage.articles: ~3 rows (approximately)
-INSERT INTO `articles` (`article_id`, `title`, `category`) VALUES
-	(1, 'Java Concurrency', 'Java'),
-	(2, 'Hibernate HQL ', 'Hibernate'),
-	(3, 'Spring MVC with Hibernate', 'Spring');
+-- INSERT INTO `manager` (`manager_id`, `name`, `password`, `roles`) VALUES
+--  (1, 'carlos2342', 'ceboll2342o', 'ROLE_MANAGER');
 -- Dumping structure for table concretepage.users
-CREATE TABLE IF NOT EXISTS `users` (
-  `username` varchar(50) NOT NULL,
-  `password` varchar(100) NOT NULL,
-  `full_name` varchar(100) NOT NULL,
-  `role` varchar(50) NOT NULL,
-  `country` varchar(100) NOT NULL,
-  `enabled` tinyint(1) NOT NULL,
-  PRIMARY KEY (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
--- Dumping data for table concretepage.users: ~2 rows (approximately)
-INSERT INTO `users` (`username`, `password`, `full_name`, `role`, `country`, `enabled`) VALUES
-	('mukesh', '$2a$10$N0eqNiuikWCy9ETQ1rdau.XEELcyEO7kukkfoiNISk/9F7gw6eB0W', 'Mukesh Sharma', 'ROLE_ADMIN', 'India', 1),
-	('tarun', '$2a$10$QifQnP.XqXDW0Lc4hSqEg.GhTqZHoN2Y52
+CREATE TABLE IF NOT EXISTS `employee` (
+  `id` int(5) NOT NULL AUTO_INCREMENT,
+  `first_name` varchar(200) NOT NULL,
+  `last_name` varchar(200) NOT NULL,
+  `description` varchar(200) NOT NULL,
+  `manager_id` int(5) NOT NULL,
+  `version` int(5) NOT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`manager_id`) REFERENCES `manager`(`manager_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+-- Dumping data for table concretepage.articles: ~3 rows (approximately)
+-- INSERT INTO `employee` (`id`, `first_name`, `last_name`, `description`) VALUES
+--  (1, 'emplo1', 'cognom1', 'descripti 1'),
+--  (2, 'emplo2', 'cognom2', 'descripti 1'),
+--  (3, 'emplo3', 'cognom3', 'descripti23424 1');, 'descripti23424 1');
