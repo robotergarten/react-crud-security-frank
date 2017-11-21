@@ -18,12 +18,11 @@ package com.greglturnquist.payroll;
 import static com.greglturnquist.payroll.WebSocketConfiguration.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.core.annotation.HandleAfterCreate;
-import org.springframework.data.rest.core.annotation.HandleAfterDelete;
-import org.springframework.data.rest.core.annotation.HandleAfterSave;
-import org.springframework.data.rest.core.annotation.RepositoryEventHandler;
+import org.springframework.data.rest.core.annotation.*;
 import org.springframework.hateoas.EntityLinks;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 /**
@@ -39,9 +38,21 @@ public class EventHandler {
 	private final EntityLinks entityLinks;
 
 	@Autowired
+	private ManagerRepository managerRepo;
+
+	@Autowired
 	public EventHandler(SimpMessagingTemplate websocket, EntityLinks entityLinks) {
 		this.websocket = websocket;
 		this.entityLinks = entityLinks;
+	}
+
+	@HandleBeforeSave
+	public void saveEmployee(Employee employee) {
+		if (null == employee.getManager()) {
+			String name = SecurityContextHolder.getContext().getAuthentication().getName();
+			Manager manager = managerRepo.findByName(name);
+			employee.setManager(manager);
+		}
 	}
 
 	@HandleAfterCreate
