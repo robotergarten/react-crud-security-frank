@@ -17,6 +17,7 @@ package com.greglturnquist.payroll;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.core.annotation.HandleBeforeCreate;
+import org.springframework.data.rest.core.annotation.HandleBeforeSave;
 import org.springframework.data.rest.core.annotation.RepositoryEventHandler;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -34,6 +35,15 @@ public class SpringDataRestEventHandler {
 	@Autowired
 	public SpringDataRestEventHandler(ManagerRepository managerRepository) {
 		this.managerRepository = managerRepository;
+	}
+
+	@HandleBeforeSave
+	public void applyManagerInfoOnUpdate(Employee employee) {
+		if (null == employee.getManager()) {
+			String name = SecurityContextHolder.getContext().getAuthentication().getName();
+			Manager manager = this.managerRepository.findByName(name);
+			employee.setManager(manager);
+		}
 	}
 
 	@HandleBeforeCreate

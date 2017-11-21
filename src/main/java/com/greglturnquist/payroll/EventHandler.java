@@ -46,15 +46,6 @@ public class EventHandler {
 		this.entityLinks = entityLinks;
 	}
 
-	@HandleBeforeSave
-	public void saveEmployee(Employee employee) {
-		if (null == employee.getManager()) {
-			String name = SecurityContextHolder.getContext().getAuthentication().getName();
-			Manager manager = managerRepo.findByName(name);
-			employee.setManager(manager);
-		}
-	}
-
 	@HandleAfterCreate
 	public void newEmployee(Employee employee) {
 		this.websocket.convertAndSend(
